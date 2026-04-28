@@ -1,0 +1,12 @@
+# Local mirrored upstream documentation and generated indexes
+references/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
