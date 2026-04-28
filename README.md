@@ -6,13 +6,78 @@
 
 本仓库只发布查询工具与更新脚本，**不再分发** EaseCation/netease-modsdk-wiki 或官方文档的镜像内容。
 
-文档内容不会提交到 GitHub。用户如需使用本地文档索引，请在自己的机器上运行更新脚本：
+文档内容不会提交到 GitHub。用户如需使用本地文档索引，需要在自己的机器上运行更新脚本。脚本会从公开来源下载文档到本地 `references/` 目录，并生成搜索索引。`references/` 已被 `.gitignore` 排除。
+
+## 首次安装
+
+### 方式一：直接克隆到 Claude Code skills 目录
+
+macOS / Linux：
+
+```bash
+git clone https://github.com/<your-name>/netease-modsdk-skill.git ~/.claude/skills/mcmodapi
+cd ~/.claude/skills/mcmodapi
+python scripts/update_docs.py
+```
+
+Windows PowerShell：
+
+```powershell
+git clone https://github.com/<your-name>/netease-modsdk-skill.git "$env:USERPROFILE\.claude\skills\mcmodapi"
+Set-Location "$env:USERPROFILE\.claude\skills\mcmodapi"
+python scripts/update_docs.py
+```
+
+> 发布后请把上面的 `<your-name>` 替换为实际 GitHub 用户名或组织名。
+
+### 方式二：手动下载
+
+1. 从 GitHub 下载本仓库 ZIP。
+2. 解压到 Claude Code skills 目录：
+   - macOS / Linux: `~/.claude/skills/mcmodapi`
+   - Windows: `%USERPROFILE%\.claude\skills\mcmodapi`
+3. 在该目录运行：
 
 ```bash
 python scripts/update_docs.py
 ```
 
-脚本会从公开来源下载文档到本地 `references/` 目录，并生成搜索索引。`references/` 已被 `.gitignore` 排除。
+## 下载或更新文档
+
+首次安装后必须运行一次：
+
+```bash
+python scripts/update_docs.py
+```
+
+后续如果想刷新到上游最新文档，也运行同一条命令：
+
+```bash
+python scripts/update_docs.py
+```
+
+更新成功后，本地会生成：
+
+```text
+references/
+  api-index.md
+  interfaces.md
+  events.md
+  search-guide.md
+  wiki/
+```
+
+这些文件只保存在本地，用于 Claude 查询，不建议提交或发布。
+
+## 使用方式
+
+安装并运行更新脚本后，在 Claude Code 中询问 ModSDK API、事件、组件或示例即可触发该技能。例如：
+
+```text
+/mcmodapi 查询 ListenForEvent 怎么用
+/mcmodapi PlayerAttackEntityEvent 参数有哪些
+/mcmodapi 服务端怎么创建实体
+```
 
 ## 文档来源与权利归属
 
@@ -51,12 +116,22 @@ references/
 
 该目录包含镜像文档和生成索引，只应保存在本地，不建议发布。
 
-## 使用方式
+## 故障排查
 
-将本目录放入 Claude Code skills 目录，例如：
+### `python` 命令不存在
 
-```text
-~/.claude/skills/mcmodapi
+尝试使用：
+
+```bash
+python3 scripts/update_docs.py
 ```
 
-然后在 Claude Code 中询问 ModSDK API、事件、组件或示例即可触发该技能。
+### 下载很慢或失败
+
+脚本需要访问 GitHub。请确认网络可以访问：
+
+```text
+https://github.com/EaseCation/netease-modsdk-wiki
+```
+
+如果失败，稍后重试即可。
